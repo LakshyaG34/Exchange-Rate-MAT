@@ -13,7 +13,7 @@ cp .env.example .env
 
 Set `EXCHANGE_RATE_API_KEY` in `backend/.env`. Keep this credential on the backend; variables prefixed with `VITE_` are bundled into browser code and must not contain secrets. `PORT` defaults to `4000`.
 
-The frontend can use a separate API origin in production by setting `VITE_API_BASE_URL` in `frontend/.env.local` before building, for example `https://api.example.com`. Set the backend's `FRONTEND_ORIGIN` to the deployed frontend origin (or a comma-separated list of origins) to allow browser requests. Leave `VITE_API_BASE_URL` blank when the frontend and API share an origin. For local development, Vite proxies `/api` to `VITE_BACKEND_URL`, which defaults to `http://localhost:4000`.
+The frontend can use a separate API origin in production by setting `VITE_API_BASE_URL` in `frontend/.env.local` before building, for example `https://api.example.com`. The backend allows CORS requests from all origins. Leave `VITE_API_BASE_URL` blank when the frontend and API share an origin. For local development, Vite proxies `/api` to `VITE_BACKEND_URL`, which defaults to `http://localhost:4000`.
 
 ## Start the backend
 

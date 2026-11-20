@@ -14,8 +14,4 @@ if (!Number.isInteger(configuredPort) || configuredPort < 1 || configuredPort > 
 module.exports = Object.freeze({
   port: configuredPort,
   exchangeRateApiKey: process.env.EXCHANGE_RATE_API_KEY?.trim() || "",
-  frontendOrigins: (process.env.FRONTEND_ORIGIN || "")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean),
 });

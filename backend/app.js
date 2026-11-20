@@ -1,6 +1,5 @@
 const express = require("express");
-const { frontendOrigins } = require("./config.js");
-const { createCorsMiddleware } = require("./middleware/cors.js");
+const corsMiddleware = require("./middleware/cors.js");
 const healthRoutes = require("./routes/health.js");
 const exchangeRateRoutes = require("./routes/exchange-rate.js");
 const rbiRoutes = require("./routes/rbi.js");
@@ -8,7 +7,7 @@ const rbiRoutes = require("./routes/rbi.js");
 const app = express();
 
 app.disable("x-powered-by");
-app.use(createCorsMiddleware(frontendOrigins));
+app.use(corsMiddleware);
 app.use("/api/health", healthRoutes);
 app.use("/api/exchange-rate", exchangeRateRoutes);
 app.use("/api/rbi", rbiRoutes);

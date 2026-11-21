@@ -1,7 +1,7 @@
 import { formatApiDate, formatRate } from "../../utils/format.js";
 import { currencyName } from "../../utils/currency.js";
 
-function CurrencyRatesTable({ data, rates, visibleCurrencies, search }) {
+function CurrencyRatesTable({ data, rates, visibleCurrencies, search, footerNote }) {
   return (
     <div className="table-card">
       <div className="table-scroll latest-table-scroll">
@@ -28,7 +28,7 @@ function CurrencyRatesTable({ data, rates, visibleCurrencies, search }) {
         </table>
       </div>
       <div className="table-footnote">
-        <span className="footnote-dot footnote-dot-teal" /> Next scheduled update: {formatApiDate(data.time_next_update_utc)}
+        <span className="footnote-dot footnote-dot-teal" /> {footerNote || `Next scheduled update: ${formatApiDate(data.time_next_update_utc)}`}
       </div>
     </div>
   );

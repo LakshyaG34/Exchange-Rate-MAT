@@ -1,7 +1,14 @@
 import { formatApiDate } from "../../utils/format.js";
 import { currencyName } from "../../utils/currency.js";
 
-function LatestMetrics({ baseCurrency, data, loading, currencyCount }) {
+function LatestMetrics({
+  baseCurrency,
+  data,
+  loading,
+  currencyCount,
+  updatedLabel = "LAST UPDATED",
+  updatedCaption = "Source update timestamp",
+}) {
   const activeBase = data?.base_code || baseCurrency;
 
   return (
@@ -23,9 +30,9 @@ function LatestMetrics({ baseCurrency, data, loading, currencyCount }) {
         <span className="metric-caption">In this API response</span>
       </article>
       <article className="metric-card">
-        <span className="metric-label">LAST UPDATED</span>
+        <span className="metric-label">{updatedLabel}</span>
         <div className="metric-date">{loading ? "Fetching…" : formatApiDate(data?.time_last_update_utc)}</div>
-        <span className="metric-caption">Source update timestamp</span>
+        <span className="metric-caption">{updatedCaption}</span>
       </article>
     </div>
   );

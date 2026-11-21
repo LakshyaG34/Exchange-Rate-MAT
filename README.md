@@ -1,6 +1,6 @@
 # Exchange Rate Desk
 
-The project compares two exchange-rate sources through a React/Vite frontend and an Express API.
+The project compares three exchange-rate sources through a React/Vite frontend and an Express API: RBI archive rates, ExchangeRate-API, and AllRatesToday.
 
 ## Configuration
 
@@ -11,7 +11,7 @@ cd backend
 cp .env.example .env
 ```
 
-Set `EXCHANGE_RATE_API_KEY` in `backend/.env`. Keep this credential on the backend; variables prefixed with `VITE_` are bundled into browser code and must not contain secrets. `PORT` defaults to `4000`.
+Set `EXCHANGE_RATE_API_KEY` in `backend/.env` if you use the ExchangeRate-API route. Set `ALL_RATES_TODAY_API_KEY` to use the AllRatesToday route. Keep these credentials on the backend; variables prefixed with `VITE_` are bundled into browser code and must not contain secrets. `PORT` defaults to `4000`.
 
 The frontend can use a separate API origin in production by setting `VITE_API_BASE_URL` in `frontend/.env.local` before building, for example `https://api.example.com`. The backend allows CORS requests from all origins. Leave `VITE_API_BASE_URL` blank when the frontend and API share an origin. For local development, Vite proxies `/api` to `VITE_BACKEND_URL`, which defaults to `http://localhost:4000`.
 
@@ -41,6 +41,7 @@ Open the Vite URL printed in the terminal. Page-level UI lives under `frontend/s
 
 - `GET /api/rbi/rates?from=YYYY-MM-DD&to=YYYY-MM-DD` fetches RBI archive reference rates for a date range.
 - `GET /api/exchange-rate/latest?base=USD` fetches the latest rates for a selected base currency.
+- `GET /api/all-rates-today/latest?base=USD` fetches AllRatesToday mid-market rates for a selected base currency. The backend caches each base-currency response for 60 seconds.
 - `GET /api/health` checks whether the Express server is running.
 
 Run the standalone ExchangeRate-API provider check from `backend/` with `npm run test:exchange-rate`.

@@ -7,7 +7,6 @@ export function formatRate(value, maximumFractionDigits = 4) {
     maximumFractionDigits,
   }).format(number);
 }
-
 export function formatApiDate(value) {
   if (!value) return "—";
   const date = new Date(value);

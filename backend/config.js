@@ -14,4 +14,5 @@ if (!Number.isInteger(configuredPort) || configuredPort < 1 || configuredPort > 
 module.exports = Object.freeze({
   port: configuredPort,
   exchangeRateApiKey: process.env.EXCHANGE_RATE_API_KEY?.trim() || "",
+  allRatesTodayApiKey: process.env.ALL_RATES_TODAY_API_KEY?.trim() || "",
 });

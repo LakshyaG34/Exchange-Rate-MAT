@@ -19,6 +19,9 @@ function AppLayout({ children }) {
           <NavLink to="/latest" className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}>
             <span className="nav-index">02</span> Latest rates
           </NavLink>
+          <NavLink to="/all-rates-today" className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}>
+            <span className="nav-index">03</span> AllRatesToday
+          </NavLink>
         </nav>
 
         <div className="topbar-side">

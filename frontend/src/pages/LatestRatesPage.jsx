@@ -6,10 +6,44 @@ import LoadingSkeleton from "../components/LoadingSkeleton.jsx";
 import MethodStrip from "../components/MethodStrip.jsx";
 import Notice from "../components/Notice.jsx";
 import PageHeading from "../components/PageHeading.jsx";
-import { getLatestExchangeRates } from "../services/exchangeRates.js";
+import { getAllRatesTodayRates, getLatestExchangeRates } from "../services/exchangeRates.js";
 import { BASE_CURRENCIES, currencyName } from "../utils/currency.js";
 
-function LatestRatesPage() {
+const PROVIDERS = {
+  exchangeRate: {
+    fetchRates: getLatestExchangeRates,
+    tone: "teal",
+    eyebrow: "SOURCE 02 · LATEST CONVERSION DATA",
+    title: "Latest exchange rates",
+    description: "Latest-rate response from ExchangeRate-API, with a selectable base currency.",
+    source: "ExchangeRate-API",
+    sourceMark: "↗",
+    methodTitle: "JSON API request",
+    methodDescription: "Frontend calls Express; the API key stays on the backend while it requests the latest JSON rates.",
+    methodMeta: "Latest snapshot",
+    updatedLabel: "LAST UPDATED",
+    updatedCaption: "Source update timestamp",
+    tableFootnote: null,
+  },
+  allRatesToday: {
+    fetchRates: getAllRatesTodayRates,
+    tone: "indigo",
+    eyebrow: "SOURCE 03 · LIVE MID-MARKET DATA",
+    title: "AllRatesToday exchange rates",
+    description: "Live mid-market quotes from AllRatesToday, with a selectable base currency.",
+    source: "AllRatesToday",
+    sourceMark: "A",
+    methodTitle: "Authenticated rates API",
+    methodDescription: "Express sends a backend-only bearer key to AllRatesToday and reshapes the returned quotes for the conversion tools.",
+    methodMeta: "Live mid-market",
+    updatedLabel: "NEWEST QUOTE",
+    updatedCaption: "Newest quote timestamp in this response",
+    tableFootnote: "Mid-market rates; the timestamp shows the newest quote returned.",
+  },
+};
+
+function LatestRatesPage({ provider = "exchangeRate" }) {
+  const source = PROVIDERS[provider] || PROVIDERS.exchangeRate;
   const [baseCurrency, setBaseCurrency] = useState("USD");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,8 +56,9 @@ function LatestRatesPage() {
     let active = true;
     setLoading(true);
     setError("");
+    setData(null);
 
-    getLatestExchangeRates(baseCurrency)
+    source.fetchRates(baseCurrency)
       .then((result) => {
         if (active) setData(result);
       })
@@ -38,7 +73,7 @@ function LatestRatesPage() {
       });
 
     return () => { active = false; };
-  }, [baseCurrency]);
+  }, [baseCurrency, source]);
 
   const rates = data?.conversion_rates || {};
   const currencyCodes = useMemo(() => Object.keys(rates).sort(), [rates]);
@@ -53,20 +88,20 @@ function LatestRatesPage() {
   return (
     <section className="page-section">
       <PageHeading
-        tone="teal"
-        eyebrow="SOURCE 02 · LATEST CONVERSION DATA"
-        title="Latest exchange rates"
-        description="Live latest-rate response from ExchangeRate-API, with a selectable base currency."
-        source="ExchangeRate-API"
-        sourceMark="↗"
+        tone={source.tone}
+        eyebrow={source.eyebrow}
+        title={source.title}
+        description={source.description}
+        source={source.source}
+        sourceMark={source.sourceMark}
       />
 
       <MethodStrip
-        tone="teal"
+        tone={source.tone}
         icon="{ }"
-        title="JSON API request"
-        description="Frontend calls Express; the API key stays on the backend while it requests the latest JSON rates."
-        meta="Latest snapshot"
+        title={source.methodTitle}
+        description={source.methodDescription}
+        meta={source.methodMeta}
       />
 
       <div className="latest-controls">
@@ -89,6 +124,8 @@ function LatestRatesPage() {
           data={data}
           loading={loading}
           currencyCount={currencyCodes.length}
+          updatedLabel={source.updatedLabel}
+          updatedCaption={source.updatedCaption}
         />
 
         <ConversionCard
@@ -125,6 +162,7 @@ function LatestRatesPage() {
             rates={rates}
             visibleCurrencies={visibleCurrencies}
             search={search}
+            footerNote={source.tableFootnote}
           />
         )}
       </>}

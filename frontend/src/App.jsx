@@ -10,6 +10,7 @@ function App() {
         <Route path="/" element={<Navigate to="/rbi" replace />} />
         <Route path="/rbi" element={<RbiRatesPage />} />
         <Route path="/latest" element={<LatestRatesPage />} />
+        <Route path="/all-rates-today" element={<LatestRatesPage provider="allRatesToday" />} />
         <Route path="*" element={<Navigate to="/rbi" replace />} />
       </Routes>
     </AppLayout>
